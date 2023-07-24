@@ -1,5 +1,6 @@
 package rivi.rss.item.staffs;
 
+import com.google.common.math.Stats;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -10,23 +11,26 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-public class AbstractStaffItem extends Item {
+public abstract class AbstractStaffItem extends Item {
 
     protected static int CHARGE_USED = 10;
     protected static int MAX_CHARGE = 1000;
     protected static int STAFF_COOLDOWN = 2;
 
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
-    public static Item INSTANCE = new AbstractStaffItem(settings);
+    // public static Item INSTANCE = new AbstractStaffItem(settings);
     public AbstractStaffItem(Settings settings) {
         super(settings);
     }
+
+    public abstract void staffEffect(ItemStack itemStack, World world, PlayerEntity player);
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 
         ItemStack itemStack = player.getStackInHand(hand);
 
+        // If there is charge left and it's not on cool down...
         if(!(itemStack.getDamage() == MAX_CHARGE - 1) && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
             if(itemStack.getDamage() > MAX_CHARGE - CHARGE_USED){
                 itemStack.setDamage(MAX_CHARGE - 1);
@@ -34,7 +38,11 @@ public class AbstractStaffItem extends Item {
                 itemStack.setDamage(itemStack.getDamage() + CHARGE_USED);
             }
 
+            // Set cooldown
             player.getItemCooldownManager().set(itemStack.getItem(), STAFF_COOLDOWN);
+
+            // Do what the staff does
+            staffEffect(itemStack, world, player);
 
             return TypedActionResult.pass(player.getStackInHand(hand));
 

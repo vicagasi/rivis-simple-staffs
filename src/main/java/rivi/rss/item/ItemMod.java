@@ -12,11 +12,12 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import rivi.rss.SimpleStaffsMod;
 import rivi.rss.item.staffs.AbstractStaffItem;
+import rivi.rss.item.staffs.FrostStaff;
 
 public class ItemMod {
 
     public static final Item VEX_WING = registerItem("vex_wing", new Item(new FabricItemSettings()));
-    public static final Item TEST_STAFF = registerItem("test_staff", AbstractStaffItem.INSTANCE);
+    public static final Item TEST_STAFF = registerItem("frost_staff", FrostStaff.INSTANCE);
     public static final Item LATENT_STAFF = registerItem("latent_staff", new Item(new FabricItemSettings()));
     private static void addItemsToIngredientTabItemGroup(FabricItemGroupEntries entries){
         entries.add(VEX_WING);
