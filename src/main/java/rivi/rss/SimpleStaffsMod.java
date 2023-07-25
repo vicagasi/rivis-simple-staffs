@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import rivi.rss.entity.EntityMod;
 import rivi.rss.item.ItemGroupsMod;
 import rivi.rss.item.ItemMod;
-import rivi.rss.loot.LootMod;
 
 public class SimpleStaffsMod implements ModInitializer {
 	public static final String MOD_ID = "rivis-simple-staffs";
@@ -22,6 +21,5 @@ public class SimpleStaffsMod implements ModInitializer {
 		EntityMod.registerEntities();
 		EntityMod.registerEntityRenderers();
 		ItemGroupsMod.registerItemGroups();
-		LootMod.registerLootPools();
 	}
 }
