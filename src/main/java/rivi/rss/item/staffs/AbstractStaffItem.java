@@ -25,21 +25,38 @@ public abstract class AbstractStaffItem extends Item {
 
     public abstract void staffEffect(ItemStack itemStack, World world, PlayerEntity player);
 
+
+    public int getMaxCharge(){
+        return MAX_CHARGE;
+    }
+
+    public int getChargeUsed(){
+        return CHARGE_USED;
+    }
+
+    public int getGetCooldown(){
+        return STAFF_COOLDOWN;
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 
         ItemStack itemStack = player.getStackInHand(hand);
 
+        int maxCharge = getMaxCharge();
+        int chargeUsed = getChargeUsed();
+        int staffCooldown = getGetCooldown();
+
         // If there is charge left and it's not on cool down...
-        if(!(itemStack.getDamage() == MAX_CHARGE - 1) && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
-            if(itemStack.getDamage() > MAX_CHARGE - CHARGE_USED){
-                itemStack.setDamage(MAX_CHARGE - 1);
+        if(!(itemStack.getDamage() == maxCharge - 1) && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
+            if(itemStack.getDamage() > maxCharge - chargeUsed){
+                itemStack.setDamage(maxCharge - 1);
             } else {
-                itemStack.setDamage(itemStack.getDamage() + CHARGE_USED);
+                itemStack.setDamage(itemStack.getDamage() + chargeUsed);
             }
 
             // Set cooldown
-            player.getItemCooldownManager().set(itemStack.getItem(), STAFF_COOLDOWN);
+            player.getItemCooldownManager().set(itemStack.getItem(), staffCooldown);
 
             // Do what the staff does
             staffEffect(itemStack, world, player);

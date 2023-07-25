@@ -28,7 +28,7 @@ public class FrostStaff extends AbstractStaffItem {
         if (!world.isClient) {
             IceProjectileEntity projectile = new IceProjectileEntity(EntityMod.IceProjectileEntityType, world);
             projectile.setItem(itemStack);
-            projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 0F);
+            projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, SPEED, 0F);
             world.spawnEntity(projectile);
         }
     }

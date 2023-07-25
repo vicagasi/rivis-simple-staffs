@@ -17,7 +17,8 @@ public class ItemGroupsMod {
                     .icon(() -> new ItemStack(ItemMod.LATENT_STAFF)).entries((displayContext, entries) -> {
                         // Item entries go here
                         entries.add(ItemMod.VEX_WING);
-                        entries.add(ItemMod.TEST_STAFF);
+                        entries.add(ItemMod.ICE_STAFF);
+                        entries.add(ItemMod.WIND_STAFF);
                         entries.add(ItemMod.LATENT_STAFF);
                     }).build());
 
