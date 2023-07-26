@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "rivis-simple-staffs:item/wind_staff"
+    "layer0": "rivis-simple-staffs:item/fire_staff"
   }
 }

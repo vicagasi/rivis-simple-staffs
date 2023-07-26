@@ -55,6 +55,12 @@ public abstract class AbstractStaffItem extends Item {
     public abstract void staffEffect(ItemStack itemStack, World world, PlayerEntity player);
 
     // Overrides
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return true;
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 

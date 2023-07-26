@@ -10,5 +10,7 @@ public class SimpleStaffsClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(EntityMod.IceProjectileEntityType, (context) ->
                 new FlyingItemEntityRenderer(context));
+        EntityRendererRegistry.register(EntityMod.FlameProjectileEntityType, (context) ->
+                new FlyingItemEntityRenderer(context));
     }
 }

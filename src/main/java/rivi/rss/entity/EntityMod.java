@@ -18,7 +18,16 @@ public class EntityMod {
             new Identifier(SimpleStaffsMod.MOD_ID, "frost_staff_projectile"),
             FabricEntityTypeBuilder.<IceProjectileEntity>create(SpawnGroup.MISC, IceProjectileEntity::new)
                     .dimensions(EntityDimensions.fixed(0.05F, 0.05F))
-                    .trackRangeBlocks(4).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking, lol)
+                    .trackRangeBlocks(20).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking, lol)
+                    .build()
+    );
+
+    public static final EntityType<FlameProjectileEntity> FlameProjectileEntityType = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(SimpleStaffsMod.MOD_ID, "flame_staff_projectile"),
+            FabricEntityTypeBuilder.<FlameProjectileEntity>create(SpawnGroup.MISC, FlameProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.05F, 0.05F))
+                    .trackRangeBlocks(20).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking, lol)
                     .build()
     );
 

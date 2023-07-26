@@ -9,6 +9,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import rivi.rss.SimpleStaffsMod;
+import rivi.rss.item.staffs.FireStaffItem;
 
 public class ItemGroupsMod {
     public static final ItemGroup RSS_GROUP = Registry.register(Registries.ITEM_GROUP,
@@ -17,6 +18,7 @@ public class ItemGroupsMod {
                     .icon(() -> new ItemStack(ItemMod.LATENT_STAFF)).entries((displayContext, entries) -> {
                         // Item entries go here
                         entries.add(ItemMod.ICE_STAFF);
+                        entries.add(ItemMod.FIRE_STAFF);
                         entries.add(ItemMod.WIND_STAFF);
                         entries.add(ItemMod.LATENT_STAFF);
                         entries.add(ItemMod.VEX_WING);
