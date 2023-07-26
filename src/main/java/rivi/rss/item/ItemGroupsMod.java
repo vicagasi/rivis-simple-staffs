@@ -16,10 +16,11 @@ public class ItemGroupsMod {
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.simplestaffs"))
                     .icon(() -> new ItemStack(ItemMod.LATENT_STAFF)).entries((displayContext, entries) -> {
                         // Item entries go here
-                        entries.add(ItemMod.VEX_WING);
                         entries.add(ItemMod.ICE_STAFF);
                         entries.add(ItemMod.WIND_STAFF);
                         entries.add(ItemMod.LATENT_STAFF);
+                        entries.add(ItemMod.VEX_WING);
+                        // entries.add(ItemMod.ICE_PROJECTILE);
                     }).build());
 
     public static void registerItemGroups(){

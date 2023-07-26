@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.BlazeEntity;
@@ -19,6 +20,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
+import rivi.rss.item.ItemMod;
 
 public class IceProjectileEntity extends ThrownItemEntity {
     public IceProjectileEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
@@ -35,13 +37,13 @@ public class IceProjectileEntity extends ThrownItemEntity {
 
     @Override
     protected Item getDefaultItem() {
-        return Items.SNOWBALL;
+        return ItemMod.ICE_PROJECTILE;
     }
 
     @Environment(EnvType.CLIENT)
     private ParticleEffect getParticleParameters() {
         ItemStack itemStack = this.getItem();
-        return (ParticleEffect)(itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
+        return (ParticleEffect)(itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack)); //PLACEHOLDER
     }
 
     @Environment(EnvType.CLIENT)
@@ -58,10 +60,20 @@ public class IceProjectileEntity extends ThrownItemEntity {
 
     protected void onEntityHit(EntityHitResult entityHitResult) { // called on entity hit.
         super.onEntityHit(entityHitResult);
+
         Entity entity = entityHitResult.getEntity(); // sets a new Entity instance as the EntityHitResult (victim)
+        DamageSource damageSource = this.getDamageSources().freeze();
 
         if (entity instanceof LivingEntity livingEntity) { // checks if entity is an instance of LivingEntity (meaning it is not a boat or minecart)
-            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.SLOWNESS, 20 * 3, 2))); // applies a status effect
+            int damage = 3;
+
+            // Extra damage agaisnt blazes
+            if(livingEntity.getType() == EntityType.BLAZE){
+                damage = damage * 3;
+            }
+
+            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 1))); // applies a status effect
+            entity.damage(damageSource, damage);
         }
     }
 

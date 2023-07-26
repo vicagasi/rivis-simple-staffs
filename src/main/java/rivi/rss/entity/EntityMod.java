@@ -17,7 +17,7 @@ public class EntityMod {
             Registries.ENTITY_TYPE,
             new Identifier(SimpleStaffsMod.MOD_ID, "frost_staff_projectile"),
             FabricEntityTypeBuilder.<IceProjectileEntity>create(SpawnGroup.MISC, IceProjectileEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
+                    .dimensions(EntityDimensions.fixed(0.05F, 0.05F))
                     .trackRangeBlocks(4).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking, lol)
                     .build()
     );

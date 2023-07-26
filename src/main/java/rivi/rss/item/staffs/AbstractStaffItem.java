@@ -5,6 +5,9 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -17,15 +20,15 @@ public abstract class AbstractStaffItem extends Item {
     protected static int MAX_CHARGE = 1000;
     protected static int STAFF_COOLDOWN = 2;
 
+    protected static SoundEvent STAFF_SOUND = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP;
+
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
     // public static Item INSTANCE = new AbstractStaffItem(settings);
     public AbstractStaffItem(Settings settings) {
         super(settings);
     }
 
-    public abstract void staffEffect(ItemStack itemStack, World world, PlayerEntity player);
-
-
+    // Getters
     public int getMaxCharge(){
         return MAX_CHARGE;
     }
@@ -38,6 +41,20 @@ public abstract class AbstractStaffItem extends Item {
         return STAFF_COOLDOWN;
     }
 
+    public SoundEvent getStaffSound(){
+        return STAFF_SOUND;
+    }
+
+    // Main methods
+    protected void playStaffSound(World world, PlayerEntity player){
+        if (!world.isClient) {
+            world.playSound(null, player.getBlockPos(), getStaffSound(), SoundCategory.PLAYERS, 1f, 1f);
+        }
+    }
+
+    public abstract void staffEffect(ItemStack itemStack, World world, PlayerEntity player);
+
+    // Overrides
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 
@@ -58,10 +75,13 @@ public abstract class AbstractStaffItem extends Item {
             // Set cooldown
             player.getItemCooldownManager().set(itemStack.getItem(), staffCooldown);
 
+            // Play staff sound
+            playStaffSound(world, player);
+
             // Do what the staff does
             staffEffect(itemStack, world, player);
 
-            return TypedActionResult.pass(player.getStackInHand(hand));
+            return TypedActionResult.success(player.getStackInHand(hand));
 
         } else {
 

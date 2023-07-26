@@ -7,6 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 public class WindStaff extends AbstractStaffItem{
@@ -14,6 +17,8 @@ public class WindStaff extends AbstractStaffItem{
     protected static int CHARGE_USED = 100;
     protected static int MAX_CHARGE = 1000;
     protected static int STAFF_COOLDOWN = 60;
+
+    protected static SoundEvent STAFF_SOUND = SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH; //PLACEHOLDER
     protected static double BOOST_HEIGHT = 1.75;
     protected static int EFFECT_DURATION = 200;
 
@@ -35,10 +40,15 @@ public class WindStaff extends AbstractStaffItem{
     }
 
     @Override
+    public SoundEvent getStaffSound(){
+        return STAFF_SOUND;
+    }
+
+    @Override
     public void staffEffect(ItemStack itemStack, World world, PlayerEntity player) {
         player.addVelocity(0, BOOST_HEIGHT, 0);
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, EFFECT_DURATION));
-        world.addParticle(ParticleTypes.EXPLOSION,
-                player.getX(), player.getY() + 0.5, player.getZ(), 0, 1, 0);
+        world.addParticle(ParticleTypes.EXPLOSION, //PLACEHOLDER
+                player.getX(), player.getY() + 1, player.getZ(), 0, BOOST_HEIGHT, 0);
     }
 }
