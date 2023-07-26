@@ -5,14 +5,12 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
-public class WindStaff extends AbstractStaffItem{
+public class WindStaffItem extends AbstractStaffItem{
 
     protected static int CHARGE_USED = 100;
     protected static int MAX_CHARGE = 1000;
@@ -23,9 +21,9 @@ public class WindStaff extends AbstractStaffItem{
     protected static int EFFECT_DURATION = 200;
 
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
-    public static Item INSTANCE = new WindStaff(settings);
+    public static Item INSTANCE = new WindStaffItem(settings);
 
-    public WindStaff(Settings settings) {
+    public WindStaffItem(Settings settings) {
         super(settings);
     }
 

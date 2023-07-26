@@ -5,15 +5,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import rivi.rss.entity.EntityMod;
 import rivi.rss.entity.IceProjectileEntity;
 
 import java.util.Random;
 
-public class FrostStaff extends AbstractStaffItem {
+public class FrostStaffItem extends AbstractStaffItem {
 
     protected static int MAX_CHARGE = 1000;
     protected static int STAFF_COOLDOWN = 2;
@@ -22,9 +19,9 @@ public class FrostStaff extends AbstractStaffItem {
     protected static final float SPEED = 3f;
 
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
-    public static Item INSTANCE = new FrostStaff(settings);
+    public static Item INSTANCE = new FrostStaffItem(settings);
 
-    public FrostStaff(Settings settings) {
+    public FrostStaffItem(Settings settings) {
         super(settings);
     }
 
