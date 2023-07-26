@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 import rivi.rss.SimpleStaffsMod;
 import rivi.rss.item.staffs.FireStaffItem;
 import rivi.rss.item.staffs.FrostStaffItem;
+import rivi.rss.item.staffs.WeatherStaffItem;
 import rivi.rss.item.staffs.WindStaffItem;
 
 public class ItemMod {
@@ -21,6 +22,7 @@ public class ItemMod {
     public static final Item ICE_STAFF = registerItem("frost_staff", FrostStaffItem.INSTANCE);
     public static final Item WIND_STAFF = registerItem("wind_staff", WindStaffItem.INSTANCE);
     public static final Item FIRE_STAFF = registerItem("fire_staff", FireStaffItem.INSTANCE);
+    public static final Item WEATHER_STAFF = registerItem("weather_staff", WeatherStaffItem.INSTANCE);
     public static final Item LATENT_STAFF = registerItem("latent_staff", new Item(new FabricItemSettings()));
 
     // Misc

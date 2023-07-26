@@ -20,6 +20,7 @@ public class ItemGroupsMod {
                         entries.add(ItemMod.ICE_STAFF);
                         entries.add(ItemMod.FIRE_STAFF);
                         entries.add(ItemMod.WIND_STAFF);
+                        entries.add(ItemMod.WEATHER_STAFF);
                         entries.add(ItemMod.LATENT_STAFF);
                         entries.add(ItemMod.VEX_WING);
                         // entries.add(ItemMod.ICE_PROJECTILE);
