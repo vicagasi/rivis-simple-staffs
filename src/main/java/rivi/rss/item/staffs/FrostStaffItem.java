@@ -16,7 +16,7 @@ public class FrostStaffItem extends AbstractStaffItem {
     protected static int STAFF_COOLDOWN = 2;
 
     protected static SoundEvent STAFF_SOUND = SoundEvents.BLOCK_SNOW_BREAK; //PLACEHOLDER
-    protected static final float SPEED = 3f;
+    protected static final float SPEED = 1f;
 
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
     public static Item INSTANCE = new FrostStaffItem(settings);
@@ -28,7 +28,7 @@ public class FrostStaffItem extends AbstractStaffItem {
     @Override
     public int getChargeUsed(){
         Random rng = new Random();
-        int x = 2 + rng.nextInt(3);
+        int x = 4 + rng.nextInt(3);
         return x;
     }
     @Override

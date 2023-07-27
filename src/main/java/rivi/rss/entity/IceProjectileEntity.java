@@ -2,8 +2,10 @@ package rivi.rss.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IceBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.EndGatewayBlockEntity;
 import net.minecraft.entity.*;
@@ -26,7 +28,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import rivi.rss.item.ItemMod;
 
@@ -79,7 +83,7 @@ public class IceProjectileEntity extends ThrownItemEntity {
         DamageSource damageSource = this.getDamageSources().freeze();
 
         if (entity instanceof LivingEntity livingEntity) { // checks if entity is an instance of LivingEntity (meaning it is not a boat or minecart)
-            int damage = 3;
+            int damage = 6;
 
             // Extra damage agaisnt blazes
             if(livingEntity.getType() == EntityType.BLAZE){
@@ -94,6 +98,17 @@ public class IceProjectileEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) { // called on collision with a block
         super.onCollision(hitResult);
         if (!this.getWorld().isClient) { // checks if the world is client
+
+            // Water to ice
+            BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
+
+            if(hitResult.getType() == HitResult.Type.BLOCK){
+                BlockPos blockPos = BlockPos.ofFloored(hitResult.getPos());
+                if (this.getWorld().isWater(blockPos)) {
+                    this.getWorld().setBlockState(blockPos, blockState);
+                }
+            }
+
             this.getWorld().sendEntityStatus(this, (byte)3); // particle?
             this.kill(); // kills the projectile
         }
@@ -165,6 +180,14 @@ public class IceProjectileEntity extends ThrownItemEntity {
         }
 
         randomTrail();
+
+        Position currentPos = this.getPos();
+        Vec3i x = new Vec3i((int) currentPos.getX(), (int) currentPos.getY(), (int) currentPos.getZ());
+        BlockPos bp = new BlockPos(x);
+        if (this.getWorld().isWater(bp)) {
+            this.getWorld().setBlockState(bp, Blocks.FROSTED_ICE.getDefaultState());
+        }
+
 
         this.setPosition(d, e, f);
     }

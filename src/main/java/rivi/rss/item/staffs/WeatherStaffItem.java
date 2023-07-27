@@ -60,6 +60,6 @@ public class WeatherStaffItem extends AbstractStaffItem{
         assert server != null;
         CommandManager commandManager = server.getCommandManager();
         // fuck this shit
-        commandManager.execute(null, "weather thunder 10000");
+        // commandManager.execute(null, "weather thunder 10000");
     }
 }
