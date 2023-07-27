@@ -1,5 +1,10 @@
 package rivi.rss.item.staffs;
 
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,9 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
+
+import java.util.Objects;
+
+import static net.minecraft.server.command.CommandManager.*;
 
 public class WeatherStaffItem extends AbstractStaffItem{
 
@@ -44,8 +55,11 @@ public class WeatherStaffItem extends AbstractStaffItem{
 
     @Override
     public void staffEffect(ItemStack itemStack, World world, PlayerEntity player) {
-        MinecraftServer server = player.getServer();
-        CommandManager commandManager = player.getServer().getCommandManager();
+        MinecraftServer server = MinecraftClient.getInstance().getServer();
+        ServerCommandSource source = player.getCommandSource();
+        assert server != null;
+        CommandManager commandManager = server.getCommandManager();
+        // fuck this shit
         commandManager.execute(null, "weather thunder 10000");
     }
 }
