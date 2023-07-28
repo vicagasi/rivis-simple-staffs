@@ -21,6 +21,8 @@ public class ItemMod {
     public static final Item FIRE_STAFF = registerItem("fire_staff", FireStaffItem.INSTANCE);
     public static final Item WEATHER_STAFF = registerItem("weather_staff", WeatherStaffItem.INSTANCE);
     public static final Item EC_STAFF = registerItem("ec_staff", EnderChestStaffItem.INSTANCE);
+
+    public static final Item THUNDER_STAFF = registerItem("thunder_staff", ThunderStaffItem.INSTANCE);
     public static final Item LATENT_STAFF = registerItem("latent_staff", new Item(new FabricItemSettings()));
 
     // Misc
