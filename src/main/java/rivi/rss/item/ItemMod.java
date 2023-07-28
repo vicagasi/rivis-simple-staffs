@@ -15,6 +15,8 @@ import rivi.rss.item.staffs.*;
 public class ItemMod {
 
     public static final Item VEX_WING = registerItem("vex_wing", new Item(new FabricItemSettings()));
+    public static final Item ARCANE_FOCUS = registerItem("arcane_focus", ArcaneFocusItem.INSTANCE);
+
     // Staffs
     public static final Item ICE_STAFF = registerItem("frost_staff", FrostStaffItem.INSTANCE);
     public static final Item WIND_STAFF = registerItem("wind_staff", WindStaffItem.INSTANCE);

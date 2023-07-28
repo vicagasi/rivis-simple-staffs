@@ -3,6 +3,7 @@ package rivi.rss.item.staffs;
 import com.google.common.math.Stats;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -13,6 +14,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
+import rivi.rss.item.ArcaneFocusItem;
+import rivi.rss.item.ItemMod;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractStaffItem extends Item {
 
@@ -61,22 +67,71 @@ public abstract class AbstractStaffItem extends Item {
         return true;
     }
 
+    public boolean canBeDrained(ItemStack itemStack, int chargeUsed){
+        return !(itemStack.getDamage() == MAX_CHARGE - 1);
+    }
+
+    public void drainCharge(ItemStack itemStack, int chargeUsed) {
+        if (!(itemStack.getDamage() == MAX_CHARGE - 1)) {
+            if (itemStack.getDamage() > MAX_CHARGE - chargeUsed) {
+                itemStack.setDamage(MAX_CHARGE - 1);
+            } else {
+                itemStack.setDamage(itemStack.getDamage() + chargeUsed);
+            }
+        }
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 
         ItemStack itemStack = player.getStackInHand(hand);
+        ItemStack focusStack = null;
+        Inventory inventory = player.getInventory();
 
         int maxCharge = getMaxCharge();
         int chargeUsed = getChargeUsed();
         int staffCooldown = getGetCooldown();
 
+        boolean hasFocus = false;
+
+        Set<Item> focusItems = new HashSet<>();
+        focusItems.add(ItemMod.ARCANE_FOCUS);
+
+        // Check for Arcane Focuses
+        if(inventory.containsAny(focusItems)){
+            for (int i = 0; i < inventory.size(); ++i) {
+                ItemStack tempStack = inventory.getStack(i);
+                if (!itemStack.getItem().equals(ItemMod.ARCANE_FOCUS)) {
+                    if(canBeDrained(tempStack, chargeUsed)){
+                        focusStack = tempStack;
+                        hasFocus = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Drain focus and do stuff if there is one
+        if(hasFocus && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
+
+            drainCharge(focusStack, chargeUsed);
+
+            // Set cooldown
+            player.getItemCooldownManager().set(itemStack.getItem(), staffCooldown);
+
+            // Play staff sound
+            playStaffSound(world, player);
+
+            // Do what the staff does
+            staffEffect(itemStack, world, player);
+
+            return TypedActionResult.success(player.getStackInHand(hand));
+        }
+
         // If there is charge left and it's not on cool down...
         if(!(itemStack.getDamage() == maxCharge - 1) && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
-            if(itemStack.getDamage() > maxCharge - chargeUsed){
-                itemStack.setDamage(maxCharge - 1);
-            } else {
-                itemStack.setDamage(itemStack.getDamage() + chargeUsed);
-            }
+            // Drain charge
+            drainCharge(itemStack, chargeUsed);
 
             // Set cooldown
             player.getItemCooldownManager().set(itemStack.getItem(), staffCooldown);

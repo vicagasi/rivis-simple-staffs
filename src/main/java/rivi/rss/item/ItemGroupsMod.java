@@ -24,6 +24,7 @@ public class ItemGroupsMod {
                         entries.add(ItemMod.EC_STAFF);
                         entries.add(ItemMod.THUNDER_STAFF);
                         entries.add(ItemMod.LATENT_STAFF);
+                        entries.add(ItemMod.ARCANE_FOCUS);
                         entries.add(ItemMod.VEX_WING);
                         // entries.add(ItemMod.ICE_PROJECTILE);
                     }).build());
