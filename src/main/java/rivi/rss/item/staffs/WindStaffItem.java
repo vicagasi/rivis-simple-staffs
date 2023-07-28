@@ -18,6 +18,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WindStaffItem extends AbstractStaffItem{
@@ -53,28 +54,69 @@ public class WindStaffItem extends AbstractStaffItem{
         return STAFF_SOUND;
     }
 
-    Box SEARCH_BOX = new Box(-105, -102, -105, 105, 102, 105);
+    // Need to figure out how to make switch statement use doubles to avoid else if hell
+    // Forgive this garbage ass hard coded implementation, I'm just a little stupid
+    public double determineMultiplyer(double p, double e){
+        double x = Math.abs(p - e);
+        if(x <= 0.33)
+            return 1.20;
+        else if (x <= 0.66)
+            return 1.10;
+        else if (x <= 0.99)
+            return 1.00;
+        else if (x <= 1.33)
+            return 0.90;
+        else if (x <= 1.66)
+            return 0.80;
+        else if (x <= 1.99)
+            return 0.60;
+        else if (x <= 2.33)
+            return 0.40;
+        else if (x <= 2.66)
+            return 0.20;
+        else
+            return 0.10;
+    }
 
     public void windPush(World world, PlayerEntity player){
 
+        // Player coords
         double pX = player.getX();
         double pY = player.getY();
         double pZ = player.getZ();
 
-        Entity entity = world.getClosestEntity(LivingEntity.class, TargetPredicate.DEFAULT, null,
-                pX, pY, pZ, SEARCH_BOX);
+        // Box bounds
+        double bbX1 = pX + 3;
+        double bbY1 = pY + 2;
+        double bbZ1 = pZ + 3;
+        double bbX2 = pX - 3;
+        double bbY2 = pY - 2;
+        double bbZ2 = pZ - 3;
 
-        if(entity != null){
+        Box searchBox = new Box(bbX2, bbY2, bbZ2,
+                bbX1, bbY1, bbZ1);
 
-            double eX = entity.getX();
-            double eY = entity.getY();
-            double eZ = entity.getZ();
+        List<LivingEntity> entities = world.getTargets(LivingEntity.class, TargetPredicate.DEFAULT, player, searchBox);
 
-            Vec3d pushVec = new Vec3d(pX - eX, pY - eY, pY - eZ);
+        entities.forEach(entity -> {
+            if(entity != null){
 
-            entity.addVelocity(pushVec);
-            entity.addVelocity(0, 1000, 0); //FIXME
-        }
+                // Entity cords
+                double eX = entity.getX();
+                double eY = entity.getY();
+                double eZ = entity.getZ();
+
+                // Multipliers are yuck, more math savvy person probably has a better solution
+                Vec3d pushVec = new Vec3d(-(pX - eX) * determineMultiplyer(pX, eX),
+                        -(pY - eY) + 1 * 0.5,
+                        -(pZ - eZ) * determineMultiplyer(pZ, eZ));
+
+                entity.addVelocity(pushVec);
+                entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, EFFECT_DURATION / 2));
+            }
+        });
+
+
     }
 
     @Override
