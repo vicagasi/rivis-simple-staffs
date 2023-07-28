@@ -29,7 +29,6 @@ public class WindStaffItem extends AbstractStaffItem{
 
     protected static SoundEvent STAFF_SOUND = SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH; //PLACEHOLDER
     protected static double BOOST_HEIGHT = 1.75;
-    protected static double PUSH_AMOUNT = 1;
     protected static int EFFECT_DURATION = 200;
 
     private static final Settings settings = new Settings().maxCount(1).maxDamage(MAX_CHARGE);
@@ -52,30 +51,6 @@ public class WindStaffItem extends AbstractStaffItem{
     @Override
     public SoundEvent getStaffSound(){
         return STAFF_SOUND;
-    }
-
-    // Need to figure out how to make switch statement use doubles to avoid else if hell
-    // Forgive this garbage ass hard coded implementation, I'm just a little stupid
-    public double determineMultiplyer(double p, double e){
-        double x = Math.abs(p - e);
-        if(x <= 0.33)
-            return 1.20;
-        else if (x <= 0.66)
-            return 1.10;
-        else if (x <= 0.99)
-            return 1.00;
-        else if (x <= 1.33)
-            return 0.90;
-        else if (x <= 1.66)
-            return 0.80;
-        else if (x <= 1.99)
-            return 0.60;
-        else if (x <= 2.33)
-            return 0.40;
-        else if (x <= 2.66)
-            return 0.20;
-        else
-            return 0.10;
     }
 
     public void windPush(World world, PlayerEntity player){
@@ -106,10 +81,12 @@ public class WindStaffItem extends AbstractStaffItem{
                 double eY = entity.getY();
                 double eZ = entity.getZ();
 
-                // Multipliers are yuck, more math savvy person probably has a better solution
-                Vec3d pushVec = new Vec3d(-(pX - eX) * determineMultiplyer(pX, eX),
-                        -(pY - eY) + 1 * 0.5,
-                        -(pZ - eZ) * determineMultiplyer(pZ, eZ));
+                // Vectors
+                Vec3d pushVec = new Vec3d(-(pX - eX), -(pY - eY), -(pZ - eZ));
+                double multiplier = ( 1 / pushVec.length());
+                pushVec = pushVec.normalize();
+                pushVec = pushVec.multiply(multiplier, 0.15, multiplier);
+                pushVec = pushVec.add(0, 0.5, 0);
 
                 entity.addVelocity(pushVec);
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, EFFECT_DURATION / 2));
