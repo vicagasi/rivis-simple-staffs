@@ -41,5 +41,7 @@ public class SimpleStaffsMod implements ModInitializer {
 				tableBuilder.pool(poolBuilder);
 			}
 		});
+
+
 	}
 }
