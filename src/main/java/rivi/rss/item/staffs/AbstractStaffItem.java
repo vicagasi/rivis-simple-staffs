@@ -111,6 +111,7 @@ public abstract class AbstractStaffItem extends Item {
             }
         }
 
+
         // Drain focus and do stuff if there is one
         if(hasFocus && !(player.getItemCooldownManager().isCoolingDown(itemStack.getItem()))){
 
