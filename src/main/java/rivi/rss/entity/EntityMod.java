@@ -31,6 +31,15 @@ public class EntityMod {
                     .build()
     );
 
+    public static final EntityType<BounceProjectileEntity> BounceProjectileEntityType = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(SimpleStaffsMod.MOD_ID, "bounce_staff_projectile"),
+            FabricEntityTypeBuilder.<BounceProjectileEntity>create(SpawnGroup.MISC, BounceProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.05F, 0.05F))
+                    .trackRangeBlocks(20).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking, lol)
+                    .build()
+    );
+
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType<T> entity) {
         return Registry.register(Registries.ENTITY_TYPE, name, entity);
